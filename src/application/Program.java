@@ -2,29 +2,65 @@ package application;
 
 import java.util.List;
 
+import model.dao.CargoDao;
 import model.dao.DaoFactory;
-import model.dao.VendedorDao;
-import model.entities.Departamento;
-import model.entities.Vendedor;
+import model.dao.UsuarioDao;
+import model.entities.Cargo;
+import model.entities.Usuario;
 
 public class Program {
 
 	public static void main(String[] args) {
 		
-		VendedorDao vendedorDao = DaoFactory.createVendedorDao();
+		CargoDao cargoDao = DaoFactory.createCargoDao();
+		UsuarioDao usuarioDao = DaoFactory.createUsuarioDao();
 		
-		System.out.println("=== TEST 1: Vendedor findById ===");
-		Vendedor vendedor = vendedorDao.fyndById(3);
+		System.out.println("=== TEST 1: Cargo findById ===");
+		Cargo cargo = cargoDao.fyndById(3);
 		
-		System.out.println(vendedor);
+		System.out.println(cargo);
 		
-		System.out.println("\n=== TEST 2: Vendedor findByDepartamento ===");
-		Departamento dep = new Departamento(2, null);
-		List<Vendedor> vendedores = vendedorDao.findByDepartamento(dep);
+		System.out.println();
+		System.out.println("=== TEST 2: Cargo findAll ===");
+		List<Cargo> cargos = cargoDao.findAll();
 		
-		for(Vendedor obj : vendedores) {
-			System.out.println(obj);
-		}
+		cargos.forEach(System.out::println);
+		
+		System.out.println();
+		System.out.println("=== TEST 3: Cargo insert ===");
+		Cargo cargo2 = new Cargo(null, "ANALISTA FINANCEIRO");
+		cargoDao.insert(cargo2);
+		cargos = cargoDao.findAll();
+		
+		cargos.forEach(System.out::println);
+		
+		System.out.println();
+		System.out.println("=== TEST 4: Cargo update ===");
+		cargo2 = cargoDao.fyndById(cargo2.getId());
+		cargo2.setCargo("RECEPCIONISTA");
+		cargoDao.update(cargo2);
+		cargos = cargoDao.findAll();
+		
+		cargos.forEach(System.out::println);
+		
+		System.out.println();
+		System.out.println("=== TEST 5: Cargo delete ===");
+		cargoDao.deleteById(cargo2.getId());
+		cargos = cargoDao.findAll();
+		
+		cargos.forEach(System.out::println);
+		
+		System.out.println();
+		System.out.println("=== TEST 6: Usuario findById ===");
+		Usuario usuario = usuarioDao.fyndById(1);
+		
+		System.out.println(usuario);
+		
+		System.out.println();
+		System.out.println("=== TEST 7: Usuario findByCargo ===");
+		List<Usuario> usuarios = usuarioDao.findByCargo(usuario.getCargo());
+		usuarios.forEach(System.out::println);		
+		
 	}
 
 }
